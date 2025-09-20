@@ -3,7 +3,7 @@ let alphaTexto = 0; // opacidad para el fade-in
 let imagenes = {};
 
 function preload() {
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 19; i++) {
     imagenes[i.toString()] = loadImage(`assets/${i}.png`);
   }
 }
@@ -114,7 +114,7 @@ let pantallas = {
   },
   13: {
     texto: "Después de varios días, ambos se quedan sin comida.\nEl gato pide ayuda a otros animales...",
-    imagen: "2",
+    imagen: "16",
     opciones: [
       { texto: "Aceptar la ayuda", destino: 14 },
       { texto: "Buscar comida sola", destino: 15 }
@@ -122,17 +122,17 @@ let pantallas = {
   },
   14: {
     texto: "Los animales traen comida para el Rey y la zorra.\nFINAL (Reinado compartido).",
-    imagen: "2",
+    imagen: "17",
     opciones: [{ texto: "Volver al inicio", destino: 0 }]
   },
   15: {
     texto: "No alcanzás la comida, el gato se enoja y se va.\nFINAL (Zorra abandonada).",
-    imagen: "2",
+    imagen: "18",
     opciones: [{ texto: "Volver al inicio", destino: 0 }]
   },
   16: {
-    texto: "Ignoraste al gato o lo devoraste.\nFINAL (Zorra cazadora).",
-    imagen: "2",
+    texto: "Ignoraste al gato o lo devoraste.",
+    imagen: "19",
     opciones: [{ texto: "Volver al inicio", destino: 0 }]
   }
 };
