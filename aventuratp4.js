@@ -1,6 +1,8 @@
 let numPantalla;
 let alphaTexto = 0; // opacidad para el fade-in
 let imagenes = {};
+let tiempoInicioPantalla = 0;
+
 
 function preload() {
   imagenes = {};
@@ -23,6 +25,9 @@ function preload() {
   imagenes["ojos"] = loadImage("assets/ojos.png");
   imagenes["escapar"] = loadImage("assets/escapar.png");
   imagenes["noescapar"] = loadImage("assets/noescapar.png");
+  imagenes["huesos"] = loadImage("assets/huesos.png");
+  imagenes["ventana"] = loadImage("assets/ventana.png");
+  imagenes["plato"] = loadImage("assets/plato.png");
 }
 
 
@@ -156,8 +161,8 @@ let pantallas = {
     imagen: "6",
 
     opciones: [
-      { texto: "Atacas", destino: 8 },
-      { texto: "Decis que sos Rey", destino: 9 }
+      { texto: "Atacás", destino: 8 },
+      { texto: "Decís que sos Rey", destino: 9 }
     ]
   },
   7: {
@@ -314,7 +319,16 @@ let pantallas = {
   15: {
     texto: "Le proponés vivir juntos en tu casa del bosque.",
     imagen: "15",
-    opciones: [{ texto: "Continuar", destino: 16 }]
+    opciones: [{
+      texto: "FIN", destino: 16,
+      pos: { x: 360, y: 415 },
+      estilo: {
+        imagen: "plato",
+        ancho: 200,
+        alto: 150
+
+      },
+    }]
   },
   16: {
     texto: "Después de varios días se quedan sin comida.\n Te planteas pedir ayuda a otros animales...",
@@ -377,13 +391,33 @@ let pantallas = {
   20: {
     texto: "Ignoraste la bolsa, decides volver a tu casa tranquila.",
     imagen: "24",
-    opciones: [{ texto: "FIN", destino: 21 }]
+    opciones: [{
+      texto: "FIN", destino: 21,
+      pos: { x: 254, y: 404 },
+      estilo: {
+        imagen: "ventana",
+        ancho: 130,
+        alto: 130
+
+      },
+    }]
   },
   21: {
-    texto: "Creditos.",
+    textoBox: { w: 500, h: 500 },
+    posTexto: { x: 300, y: 150 },
+    texto: "\n\nInspirado en:\n\n El Gato y La Zorra\n Artista: Constantin Bronzit\n https://www.youtube.com/watch?v=wmp8QdJ5nvY",
     imagen: "25",
-    opciones: [{ texto: "volver al inicio", destino: 0 }]
-  }
+    opciones: [{
+      texto: "FIN", destino: 0,
+      pos: { x: 280, y: 530 },
+      estilo: {
+        imagen: "huesos",
+        ancho: 200,
+        alto: 150
+
+      },
+    }]
+  },
 };
 
 function setup() {
@@ -430,27 +464,34 @@ function draw() {
   pop();
 
   // loop para dibujar los botones
-  for (let i = 0; i < numOpciones; i++) {
-    let opcion = pantalla.opciones[i];
-    let x = opcion.pos?.x;
-    let y = opcion.pos?.y;
+  let tiempoTranscurrido = millis() - tiempoInicioPantalla;
 
-    if (x === undefined || y === undefined) {
-      if (numOpciones === 1) {
-        x = width / 2;
-        y = yBase;
-      } else if (numOpciones === 2) {
-        x = width / 2 + (i === 0 ? -espacioEntre / 2 : espacioEntre / 2);
-        y = yBase;
-      } else {
-        x = width / 2;
-        y = yBase + i * 100;
+  if (tiempoTranscurrido > 1500) { // espera 1500ms = 1.5 segundos
+    // dibuja los botones
+    for (let i = 0; i < numOpciones; i++) {
+      let opcion = pantalla.opciones[i];
+      let x = opcion.pos?.x;
+      let y = opcion.pos?.y;
+
+      if (x === undefined || y === undefined) {
+        if (numOpciones === 1) {
+          x = width / 2;
+          y = yBase;
+        } else if (numOpciones === 2) {
+          x = width / 2 + (i === 0 ? -espacioEntre / 2 : espacioEntre / 2);
+          y = yBase;
+        } else {
+          x = width / 2;
+          y = yBase + i * 100;
+        }
       }
-    }
 
-    dibujarBoton(opcion.texto, x, y, opcion.estilo);
+      dibujarBoton(opcion.texto, x, y, opcion.estilo);
+    }
   }
 }
+
+
 
 
 function dibujarBoton(txt, x, y, estilo = {}) {
@@ -508,6 +549,10 @@ function dibujarBoton(txt, x, y, estilo = {}) {
 
 
 function mousePressed() {
+
+
+  let tiempoTranscurrido = millis() - tiempoInicioPantalla;
+  if (tiempoTranscurrido < 1500) return; // aún no habilita botones
   let pantalla = pantallas[numPantalla];
   let numOpciones = pantalla.opciones.length;
   let espacioEntre = 300;
@@ -540,6 +585,8 @@ function mousePressed() {
       mouseY > y - h / 2 && mouseY < y + h / 2) {
       numPantalla = opcion.destino;
       alphaTexto = 0;
+      tiempoInicioPantalla = millis(); // ← ¡esto es lo que faltaba!
+
     }
   }
 
