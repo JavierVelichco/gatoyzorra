@@ -19,6 +19,10 @@ function preload() {
   imagenes["ignorar"] = loadImage("assets/ignorar.png");
   imagenes["comida"] = loadImage("assets/comida.png");
   imagenes["boton"] = loadImage("assets/boton.png");
+  imagenes["button"] = loadImage("assets/button.png");
+  imagenes["ojos"] = loadImage("assets/ojos.png");
+  imagenes["escapar"] = loadImage("assets/escapar.png");
+  imagenes["noescapar"] = loadImage("assets/noescapar.png");
 }
 
 
@@ -118,56 +122,141 @@ let pantallas = {
 
   // --- RAMA GATO ---
   5: {
-    texto: "El campesino te abandona en el bosque. ¿Escapás de la bolsa?",
+    texto: "El campesino te abandona en el bosque.\n\n¿Escapás de la bolsa?",
     imagen: "5",
     opciones: [
-      { texto: "Sí", destino: 6 },
-      { texto: "No", destino: 7 }
+      {
+        texto: "escapar",
+        destino: 6,
+        pos: { x: 150, y: 340 },
+        estilo: {
+          imagen: "escapar",
+          ancho: 150,
+          alto: 100
+        }
+      },
+      {
+        texto: "No escapar",
+        destino: 7,
+        pos: { x: 450, y: 340 },
+        estilo: {
+          imagen: "noescapar",
+          ancho: 100,
+          alto: 100
+        }
+      }
     ]
+
   },
+
   6: {
-    texto: "Escapaste. Te encontrás con una zorra.\n¿Qué hacés?",
+    textoBox: { w: 400, h: 300 },
+    posTexto: { x: 200, y: 100 },
+    texto: "Lograste escapar de la bolsa, pero te encontrás con una zorra.\n¿Qué hacés?",
     imagen: "6",
+
     opciones: [
-      { texto: "Atacarla", destino: 8 },
-      { texto: "Decir que sos Rey", destino: 9 }
+      { texto: "Atacas", destino: 8 },
+      { texto: "Decis que sos Rey", destino: 9 }
     ]
   },
   7: {
-    texto: "No escapaste...\nFINAL (Gato atrapado en el bosque).",
+    texto: "Quedás atrapado en el bosque para siempre.",
     imagen: "7",
-    opciones: [{ texto: "FIN", destino: 21 }]
+    opciones: [
+      {
+        texto: "Continuar", destino: 21, pos: { x: 180, y: 175 },
+        estilo: {
+          imagen: "ojos",
+          ancho: 60,
+          alto: 60
+        }
+      },
+      {
+        texto: "Continuar", destino: 21, pos: { x: 480, y: 220 },
+        estilo: {
+          imagen: "ojos",
+          ancho: 50,
+          alto: 50
+        }
+      },
+      {
+        texto: "Continuar", destino: 21, pos: { x: 100, y: 250 },
+        estilo: {
+          imagen: "ojos",
+          ancho: 60,
+          alto: 50
+        }
+      },
+      {
+        texto: "Continuar", destino: 21, pos: { x: 150, y: 350 },
+        estilo: {
+          imagen: "ojos",
+          ancho: 50,
+          alto: 60
+        }
+      }
+    ]
   },
+
   8: {
-    texto: "La atacaste, pero ella te vence.\nFINAL (Gato rechazado).",
+    texto: "Atacas, pero ella te vence.",
     imagen: "8",
-    opciones: [{ texto: "FIN", destino: 21 }]
+    opciones: [{ texto: "FIN", destino: 19 }]
   },
   9: {
     texto: "La zorra propone vivir juntos. ¿Aceptás?",
     imagen: "9",
     opciones: [
-      { texto: "Sí", destino: 10 },
-      { texto: "No", destino: 8 }
+      {
+        texto: "Sí", destino: 10,
+        estilo: {
+          ancho: 60,
+          alto: 60
+        }
+      },
+      {
+        texto: "No", destino: 7,
+        estilo: {
+          ancho: 60,
+          alto: 60
+        }
+      }
     ]
   },
   10: {
-    texto: "La zorra convence a los animales del bosque de traerte comida.\nPero sos glotón...",
+    texto: "La zorra convence a los animales del bosque de traerte comida.\nSos glotón, pero miedoso...",
     imagen: "10",
     opciones: [
-      { texto: "Comés todo", destino: 21 },
-      { texto: "Te escondés con miedo", destino: 22 }
+      { texto: "Comés todo", destino: 11 },
+      { texto: "Te escondés", destino: 12 }
     ]
   },
   11: {
-    texto: "Todos se asombran de tu voracidad.\nFINAL (Gato Rey alimentado por los animales).",
+    texto: "Todos se asombran de tu voracidad. Eres el Rey\n",
     imagen: "11",
-    opciones: [{ texto: "FIN", destino: 21 }]
+    opciones: [{
+      texto: "FIN", destino: 21, pos: { x: 350, y: 520 },
+      estilo: {
+        imagen: "comida",
+        ancho: 180,
+        alto: 180
+      }
+    }]
+
   },
+
   12: {
-    texto: "No salís y los animales te desprecian.\nFINAL (Gato solo y olvidado).",
+    texto: "No salís y los animales te desprecian.\n",
     imagen: "12",
-    opciones: [{ texto: "FIN", destino: 21 }]
+    opciones: [{
+      texto: "Continuar", destino: 21, pos: { x: 120, y: 473 },
+      estilo: {
+        imagen: "button",
+        ancho: 73,
+        alto: 73
+      }
+    }]
   },
 
   // --- RAMA ZORRA ---
@@ -221,8 +310,6 @@ let pantallas = {
       }
     ]
 
-
-
   },
   15: {
     texto: "Le proponés vivir juntos en tu casa del bosque.",
@@ -230,17 +317,32 @@ let pantallas = {
     opciones: [{ texto: "Continuar", destino: 16 }]
   },
   16: {
-    texto: "Después de varios días, ambos se quedan sin comida.\nEl gato pide ayuda a otros animales...",
+    texto: "Después de varios días se quedan sin comida.\n Te planteas pedir ayuda a otros animales...",
     imagen: "16",
     opciones: [
-      { texto: "Aceptar la ayuda", destino: 17 },
-      { texto: "Buscar comida sola", destino: 18 }
+      { texto: "Pides ayuda", destino: 17 },
+      {
+        texto: "Buscas comida sola", destino: 18,
+        estilo: {
+          ancho: 210,
+          alto: 40
+        }
+      }
     ]
   },
   17: {
     texto: "Los animales traen comida para el Rey y la zorra.",
     imagen: "17",
-    opciones: [{ texto: "FIN", destino: 21 }]
+    opciones: [{
+      texto: "FIN", destino: 21,
+      pos: { x: 300, y: 510 },
+      estilo: {
+        imagen: "comida",
+        ancho: 160,
+        alto: 160
+
+      },
+    }]
   },
   18: {
     texto: "No alcanzás la comida, el gato se enoja y se va.",
@@ -369,7 +471,7 @@ function dibujarBoton(txt, x, y, estilo = {}) {
   let hovering = mouseX > x - w / 2 && mouseX < x + w / 2 &&
     mouseY > y - h / 2 && mouseY < y + h / 2;
 
-  // 🖼️ Si tiene imagen, usarla como botón
+  //Si tiene imagen, usarla como botón
   if (estilo.imagen && imagenes[estilo.imagen]) {
     if (hovering) {
       tint(255, 200); // efecto visual al pasar el mouse
